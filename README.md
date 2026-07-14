@@ -1,11 +1,11 @@
 # http-stt
 
-Hermes STT plugin — transcribes audio via a self-hosted HTTP speech-to-text service.
+Hermes STT plugin — transcribes audio via any HTTP speech-to-text service (local or remote).
 
 ## Install
 
 ```bash
-cp -r http-stt ~/.hermes/plugins/
+git clone https://github.com/seamusmore/hermes-http-stt.git ~/.hermes/plugins/http-stt
 ```
 
 Then restart the Hermes gateway.
@@ -34,22 +34,9 @@ The plugin registers a `TranscriptionProvider` named `http_stt`. When the gatewa
 {"transcript": "recognized text", "text": "alternative field"}
 ```
 
-## STT service example (SenseVoice)
+## STT service example
 
-```python
-# service.py — run with: uvicorn service:app --port 8001
-from fastapi import FastAPI, UploadFile, File, Query
-from funasr import AutoModel
-
-app = FastAPI()
-model = AutoModel(model="iic/SenseVoiceSmall")
-
-@app.post("/transcribe")
-async def transcribe(file: UploadFile = File(...), language: str = "auto"):
-    audio = await file.read()
-    result = model.generate(input=audio, language=language)
-    return {"transcript": result[0]["text"]}
-```
+See [hermes-stt-service](https://github.com/seamusmore/hermes-stt-service) for a ready-to-run SenseVoice STT service.
 
 ## License
 
